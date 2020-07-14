@@ -1,0 +1,47 @@
+{%extends "layout/bootstrap-lay.html" %}
+
+{% block mainbody %}
+
+    <body style="padding:10px 10px 5px;overflow-x:hidden;" >
+        <form id="js_searchBar" >
+
+            <div class="row" style="margin-bottom:8px;" >
+                <div class="col-md-3 col-sm-3" >
+                    <label class="form-lable" style="width:60px;float:left;">姓名：</label>
+                    <div style="overflow:hidden;" >
+                        <input class="form-control input-sm" type="text" name="realnameLike" >
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-3" >
+                    <label class="form-lable" style="width:60px;float:left;">账号：</label>
+                    <div style="overflow: hidden;" >
+                        <input class="form-control input-sm" type="text" name="usernameLike" >
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-3" >
+                    <label class="form-lable" style="width:60px;float:left;">类型：</label>
+                    <div style="overflow:hidden;" >
+                        <select class="form-control input-sm" name="userType" >
+                            <option value="" >--请选择--</option>
+                            <option value="8001" >教师</option>
+                            <option value="8002" >学生</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-3" >
+                    <button type="button" class="btn btn-info btn-sm" onclick="searchGridFunc()" >
+                        <i class="glyphicon glyphicon-search"></i>&nbsp;查询
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <table id="js_jqGrid" ></table>
+        <div id="js_gridPager" ></div>
+    </body>
+
+    <script src="/static/js/base/user_list.js" type="text/javascript"></script>
+{% endblock %}

@@ -1,0 +1,22 @@
+
+.hr-line-dashed {
+    border-top: 1px dashed #e7eaec;
+    height: 1px;
+    margin: 7px -10px;
+}
+
+
+/* 校正grid行字号 */
+table.ui-jqgrid-htable, table.ui-pg-table, div.ui-jqgrid-bdiv table {
+    font-size: 14px !important;
+}
+
+/* 验证错误后的样式 */
+input.error, select.error, textarea.error {
+	border: 1px solid #EA5200;
+}
+label.error {
+	font-weight: bold;
+	padding-left: 8px;
+    color: #EA5200;
+}

@@ -1,0 +1,63 @@
+{%extends "layout/appweb-lay.html" %}
+
+{% block mainbody %}
+
+    <body style="padding:5px;overflow:auto;" >
+
+        <script type="text/javascript">
+        //获取当前页面宽高
+        var height = $(window).height() - 10;
+        var width = $(document.body).width() - 10;
+        //手机类型 iOS/android
+        var phoneType = '{{ phoneType }}';
+
+        $(document).ready(function () {
+            //当前预览类型
+            var viewType = '{{ viewType }}';
+            var src = '{{ src }}';
+            if('html' == viewType) {
+                //html嵌套iframe直接打开
+                $(document.body).append('<iframe src="' + src + '" width="' + width + '" height="' + height + '" frameBorder="0" allowTransparency="true" ></iframe>');
+            } else if ('img' == viewType) {
+                //图片
+                $(document.body).append(
+                    '<div style="height:' + height + 'px;overflow-y: auto;" ><img src="' + src + '" style="max-width:100%;" ></img></div>'
+                );
+            } else if ('pdf' == viewType) {
+                //pdf预览, 使用pdf预览
+                location.href = '/static/plugins/pdf.js/pdf_view.html?src=' + src;
+            } else if ('mp3' == viewType) {
+                //mp3格式音频
+		        $(document.body).append('<audio src="' + src + '" controls="controls" ></audio>');
+            } else if ('wav' == viewType) {
+                //wav格式音频, 有备用的mp3保证预览状态
+                var html =	'<audio controls="controls" >' +
+                            '	<source src="' + src + '.mp3" type="audio/mpeg" >' +
+                            '	<source src="' + src + '" type="audio/wav" >' +
+                            '	对不起，您的手机暂不支持播放。' +
+                            '</audio>';
+                $(document.body).append(html);
+            } else if ('video' == viewType) {
+                //安卓使用原生, 苹果使用插件
+                if('android' == phoneType) {
+                    $(document.body).append(
+                        '<video src="' + src + '" width="' + width + '" height="' + height + '" controls></video>'
+                    );
+                } else {
+                    location.href = '/static/plugins/jwplayer-7.10.4/demo.html?src=' + src;
+                }
+            } else {
+                //其它格式提示无法预览
+                unsupportView();
+            }
+        });
+
+        //不支持在线预览
+        function unsupportView(){
+            $(document.body).append(
+                '<div>&nbsp;对不起，该文件暂不支持在线预览！ 您可以前往电脑版系统下载。</div>'
+            );
+        }
+        </script>
+    </body>
+{% endblock %}

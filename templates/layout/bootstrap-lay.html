@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>智慧魔盒管理</title>
+
+    <link href="/static/plugins/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+
+    <link href="/static/plugins/jqGrid/5.2.0/css/ui.jqgrid-bootstrap.css" type="text/css" rel="stylesheet" />
+
+    <link href="/static/layout/common.css" type="text/css" rel="stylesheet" />
+    <link href="/static/layout/css/bootstrap-lay.css" type="text/css" rel="stylesheet" />
+
+
+    <script src="/static/plugins/jquery/3.3.1/jquery-3.3.1.min.js" type="text/javascript" ></script>
+
+    <script src="/static/plugins/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript" ></script>
+
+    <script src="/static/plugins/layer/3.1.1/layer.js" type="text/javascript" ></script>
+    <script src="/static/plugins/laydate/5.0.9/laydate.js" type="text/javascript" ></script>
+
+    <script src="/static/plugins/jqGrid/5.2.0/i18n/grid.locale-cn.js" ></script>
+    <script src="/static/plugins/jqGrid/5.2.0/jquery.jqGrid.min.js" ></script>
+
+    <!-- 引入vue.js -->
+    <script src="/static/plugins/vue/2.5.16/vue.min.js" type="text/javascript" ></script>
+
+    <script type="text/javascript">
+        //jqGrid的配置信息
+        $.jgrid.defaults.styleUI = 'Bootstrap';
+    </script>
+
+    <!-- 通用js方法 -->
+    <script src="/static/layout/common.js" type="text/javascript"></script>
+    <script src="/static/layout/js/bootstrap-lay.js" type="text/javascript"></script>
+</head>
+
+<!--可以被继承者们替换掉的部分-->
+{% block mainbody %}
+
+{% endblock %}
+</html>

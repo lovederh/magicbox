@@ -1,0 +1,51 @@
+/*缩小表单输入框之间的间距*/
+.layui-form-item {
+    margin-bottom: 10px;
+    clear: both;
+}
+
+/*输入框下提示*/
+.lay_input_tips {
+	margin-top: 2px;
+    margin-left: 115px;
+    color: #999!important;
+}
+
+/*详情页面*/
+.view_right_div {
+	border: 1px solid #e6e6e6;
+	margin-left: 110px;
+	line-height: 20px;
+	padding: 8px;
+	min-height: 20px;
+}
+
+/*列表数据颜色块展示*/
+.row_color_span {
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 2px;
+    border: none;
+    color: #fff;
+    padding: 0 8px;
+    display: inline-block;
+}
+
+
+/*树搜索按钮样式*/
+.tree_query_btn {
+	cursor: pointer;
+	height: 32px;
+    line-height: 32px;
+	display: block;
+    border: 1px solid #C9C9C9;
+    text-align: center;
+}
+
+/* 解决数据表格checkbox错位问题 */
+.layui-table-cell .layui-form-checkbox[lay-skin="primary"]{
+	top: 25%;
+	transform: translateY(-50%);
+}

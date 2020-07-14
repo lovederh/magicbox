@@ -1,0 +1,199 @@
+{%extends "layout/bootstrap-lay.html" %}
+
+{% block mainbody %}
+    <!-- 引入验证使用的组件 -->
+    {% include 'layout/validate-lay.html' %}
+
+    <body style="padding:10px 10px 5px;overflow-x:hidden;" >
+
+        <div id="rrapp" >
+            <!-- 列表区域 -->
+            <div v-show=" 'grid' == showType " >
+                <div class="row" >
+                        <div class="col-md-3 col-sm-3" >
+                            <label class="form-lable" style="width:85px;float:left;">设备IP：</label>
+                            <div style="overflow: hidden;" >
+                                <input class="form-control input-sm" type="text" v-model="queryData.ip">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-3" >
+                            <label class="form-lable" style="width:85px;float:left;">自定义名称：</label>
+                            <div style="overflow: hidden;" >
+                                <input class="form-control input-sm" type="text" v-model="queryData.alias_name">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-3" >
+                            <label class="form-lable" style="width:80px;float:left;">设备类型：</label>
+                            <div style="overflow:hidden;" >
+                                <select class="form-control input-sm" v-model="queryData.hardware_type" >
+                                    <option value="" >--请选择--</option>
+                                    <option value="1001" >画屏</option>
+                                    <option value="1002" >学生端</option>
+                                    <option value="1003" >教师端</option>
+                                    <option value="1004" >一体机</option>
+                                    <option value="1005" >飞比网关</option>
+                                    <option value="1006" >zigbee网关</option>
+                                    <option value="1007" >班牌</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-2" >
+                            <button class="btn btn-info" type="button" @click="searchGridVm" >
+                                <i class="glyphicon glyphicon-search" ></i>&nbsp;搜索
+                            </button>
+                        </div>
+                </div>
+
+                <div style="padding:5px 0 10px;" >
+                    <a class="btn btn-primary" @click="add" ><i class="fa fa-plus"></i>&nbsp;添加设备</a>&nbsp;&nbsp;
+                    <a class="btn btn-primary" @click="genOnlineHardware" ><i class="fa fa-plus"></i>&nbsp;获取在线设备</a>&nbsp;&nbsp;
+                    <a class="btn btn-primary" @click="genBoxQRCode" ><i class="fa fa-plus"></i>&nbsp;魔盒二维码</a>&nbsp;&nbsp;
+                </div>
+
+                <table id="js_jqGrid"></table>
+                <div id="js_gridPager"></div>
+            </div>
+
+            <!-- 表单区域 -->
+            <div v-show=" 'form' == showType " class="panel panel-default" >
+                <div class="panel-heading" >硬件信息</div>
+
+                <form id="js_form" method="post" class="form-horizontal" style="width:100%;padding:15px;" >
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>
+                                设备名：<span class="required_star">*</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="entity.hostname" name="hostname" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>
+                                自定义名称：<span class="required_star">*</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="entity.alias_name" name="alias_name" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>
+                                设备IP：<span class="required_star">*</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" style="margin-top:5px;" rows="5"
+                            v-model="entity.ip" placeholder="请输入IP" required ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>Mac地址：</label>
+                        </div>
+                        <div class="col-sm-9" >
+                            <textarea class="form-control" style="margin-top:5px;" rows="5"
+                            v-model="entity.mac" placeholder="请输入Mac地址" ></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>设备类型：</label>
+                        </div>
+                        <div class="col-sm-9" >
+                            <select class="form-control input-sm" v-model="entity.hardware_type" name="hardware_type" >
+                                <option value="" >--请选择--</option>
+                                <option value="1001" >画屏</option>
+                                <option value="1002" >学生端</option>
+                                <option value="1003" >教师端</option>
+                                <option value="1004" >一体机</option>
+                                <option value="1005" >飞比网关</option>
+                                <option value="1006" >zigbee网关</option>
+                                <option value="1007" >班牌</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-sm-2 control-label"></div>
+                        <input type="button" class="btn btn-success" @click="saveVm" value="保存"/>&nbsp;&nbsp;
+                        <input type="button" class="btn btn-warning" @click="reloadVm" value="取消"/>
+                    </div>
+                </form>
+            </div>
+
+            <div v-show=" 'view' == showType " class="panel panel-default" >
+                <div class="panel-heading" >设备详情</div>
+
+                <div class="form-horizontal" style="width:100%;padding:15px;" >
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>设备名：</label>
+                        </div>
+                        <div class="col-sm-9">[[entity.hostname]]</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>设备IP：</label>
+                        </div>
+                        <div class="col-sm-9">[[entity.ip]]</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>mac地址：</label>
+                        </div>
+                        <div class="col-sm-9" >[[entity.mac]]&nbsp;</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>设备类型：</label>
+                        </div>
+                        <div class="col-sm-9" >
+                            <select class="form-control input-sm" v-model="entity.hardware_type" disabled="disabled" >
+                                <option value="" >--请选择--</option>
+                                <option value="1001" >画屏</option>
+                                <option value="1002" >学生端</option>
+                                <option value="1003" >教师端</option>
+                                <option value="1004" >一体机</option>
+                                <option value="1005" >飞比网关</option>
+                                <option value="1006" >zigbee网关</option>
+                                <option value="1007" >班牌</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>创建时间：</label>
+                        </div>
+                        <div class="col-sm-9" >[[entity.create_time]]&nbsp;</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div>
+                        <div class="col-sm-2 text_right"></div>
+                        <input type="button" class="btn btn-warning" @click="reloadVm" value="返回"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    
+    
+    <script src="/static/js/sr/hardware_list.js" type="text/javascript"></script>
+{% endblock %}

@@ -1,0 +1,226 @@
+{%extends "layout/bootstrap-lay.html" %}
+
+{% block mainbody %}
+    <!-- 引入验证使用的组件 -->
+    {% include 'layout/validate-lay.html' %}
+
+    <body style="padding:10px 10px 5px;overflow-x:hidden;" >
+
+        <div id="rrapp" >
+            <!-- 列表区域 -->
+            <div v-show=" 'grid' == showType " >
+                <div class="row" >
+                    <div class="col-md-3 col-sm-3" >
+                        <label class="form-lable" style="width:80px;float:left;">mac地址：</label>
+                        <div style="overflow:hidden;" >
+                            <input class="form-control input-sm" type="text" v-model="queryData.macLike" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3" >
+                        <label class="form-lable" style="width:80px;float:left;">设备名称：</label>
+                        <div style="overflow:hidden;" >
+                            <input class="form-control input-sm" type="text" v-model="queryData.equNameLike" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3" >
+                        <label class="form-lable" style="width:80px;float:left;">终端类型：</label>
+                        <div style="overflow:hidden;" >
+                            <select class="form-control input-sm" v-model="queryData.equType" >
+                                <option value="" >--请选择--</option>
+                                <option value="ps" >画屏</option>
+                                <option value="ytj" >一体机</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3" >
+                        <button type="button" class="btn btn-info btn-sm" @click="searchGridVm" >
+                            <i class="glyphicon glyphicon-search"></i>&nbsp;查询
+                        </button>
+                    </div>
+                </div>
+
+                <div style="padding:8px 0 10px;" >
+                    <a class="btn btn-primary" @click="addPsVm" ><i class="fa fa-plus"></i>&nbsp;新增画屏</a>&nbsp;&nbsp;
+                    <a class="btn btn-primary" @click="toBatchSetTimeVm" ><i class="glyphicon glyphicon-adjust"></i>&nbsp;批量设置开关机</a>&nbsp;&nbsp;
+                </div>
+
+                <table id="js_jqGrid"></table>
+                <div id="js_gridPager"></div>
+            </div>
+
+            <!-- 表单区域 -->
+            <div v-show=" 'form' == showType " class="panel panel-default" >
+                <div class="panel-heading" >终端设备维护</div>
+
+                <form id="js_form" method="post" class="form-horizontal" style="width:100%;padding:15px;" >
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>
+                                mac地址：<span class="required_star">*</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-9" >
+                            <div class="input-group" v-if=" 'ps' == entity.equ_type " >
+                                <input type="text" class="form-control" v-model="entity.mac" name="mac" required >
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default" @click="selOnlinePsVm" >选择在线终端</button>
+                                </div>
+                            </div>
+                            <div v-else >[[entity.mac]]</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>
+                                设备名称：<span class="required_star">*</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="entity.equ_name" name="equ_name" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>设备别名：</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="entity.alias_name" name="alias_name" />
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>开机时间：</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="weekup_time" name="weekup_time" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>关机时间：</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="close_time" name="close_time" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label" >
+                            <label>备注：</label>
+                        </div>
+                        <div class="col-sm-9" >
+                            <textarea class="form-control" style="margin-top:5px;"
+                            v-model="entity.ps" placeholder="请输入备注，不超过500字" ></textarea>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="col-sm-2 control-label"></div>
+                        <input type="button" class="btn btn-success" @click="saveVm" value="保存"/>&nbsp;&nbsp;
+                        <input type="button" class="btn btn-warning" @click="reloadVm" value="取消"/>
+                    </div>
+                </form>
+            </div>
+
+            <div v-show=" 'view' == showType " class="panel panel-default" >
+                <div class="panel-heading" >终端设备详情</div>
+
+                <div class="form-horizontal" style="width:100%;padding:15px;" >
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>mac地址：</label>
+                        </div>
+                        <div class="col-sm-9">[[entity.mac]]</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>设备名称：</label>
+                        </div>
+                        <div class="col-sm-9">[[entity.equ_name]]</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>设备别名：</label>
+                        </div>
+                        <div class="col-sm-9">[[entity.alias_name]]</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>开机时间：</label>
+                        </div>
+                        <div class="col-sm-9">[[entity.weekup_time]]</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>关机时间：</label>
+                        </div>
+                        <div class="col-sm-9">[[entity.close_time]]</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 text_right" >
+                            <label>备注：</label>
+                        </div>
+                        <div class="col-sm-9" >[[entity.ps]]&nbsp;</div>
+                    </div>
+                    <div class="hr-line-dashed" ></div>
+
+                    <div>
+                        <div class="col-sm-2 text_right"></div>
+                        <input type="button" class="btn btn-warning" @click="reloadVm" value="返回"/>
+                    </div>
+                </div>
+            </div>
+
+            <!--批量设置开关机时间时, 使用的弹窗-->
+            <div id="setTimesDiv" style="padding:10px;overflow-x:hidden;display:none;" >
+                <div style="margin-top:10px;" >
+                    <label class="form-lable" style="width:78px;float:left;" >开机时间：</label>
+                    <div style="overflow:hidden;" >
+                        <input type="text" class="form-control input-sm" id="set_weekup_time" readonly />
+                    </div>
+                </div>
+
+                <div style="margin-top:10px;" >
+                    <label class="form-lable" style="width:78px;float:left;" >关机时间：</label>
+                    <div style="overflow:hidden;" >
+                        <input type="text" class="form-control input-sm" id="set_close_time" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <!-- 选择在线终端设备 -->
+            <div id="selOnlinePsDiv" style="padding:10px;overflow-x:hidden;display:none;" >
+
+                <div v-for="item in onlinePs" >
+                    <div class="radio" >
+                        <label>
+                            <input type="radio" name="mac" :value="item" v-model="tempMac" >
+                            [[item]]
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script src="/static/js/base/terminal_equ_list.js" type="text/javascript"></script>
+{% endblock %}

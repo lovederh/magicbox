@@ -1,0 +1,81 @@
+{%extends "layout/appweb-lay.html" %}
+
+{% block mainbody %}
+    <style>
+        p, span, img {
+            -webkit-font-smoothing: antialiased;
+            moz-user-select: -moz-none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        div, p {
+            box-sizing: border-box;
+        }
+        .right {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bottm {
+            overflow: auto;
+        }
+        .cell {
+            margin-top: 30px;
+        }
+        .cell-tit {
+            font-size: 20px;
+            color: #000;
+            background-color: #f5f5f5;
+            padding: 10px 28px;
+        }
+        .cl {
+            color: #f38420;
+        }
+        .opt {
+            margin: 16px 0 0 50px;
+        }
+        .opt-tit {
+            font-size: 20px;
+            color: #000;
+        }
+    </style>
+
+    <body style="padding:5px;overflow:auto;" >
+
+        <div class="test" >
+            <div class="right">
+                <div class="bottm">
+                    <div class="big">
+
+                        {% for ques in quesList %}
+                            <div class="cell" >
+                                <p class="cell-tit">
+                                    <span class="cl">{{ forloop.counter }}、</span>
+                                    （{{ques.ques_type_label}}）
+                                    <!-- safe将字符串标记为安全, 即展示原生html -->
+                                    <span>{{ ques.ques_name|safe }}</span>
+                                </p>
+                                <!-- 单选、多选, 展示选项列表 -->
+                                {% if '24004001' == ques.ques_type or '24004002' == ques.ques_type %}
+                                    {% for option in ques.opt_list %}
+                                        <div class="opt" >
+                                            <p class="opt-tit">
+                                                {{option.option_no}}、
+                                                <span>{{ option.option_describe|safe }}</span>
+                                            </p>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}

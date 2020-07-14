@@ -1,0 +1,105 @@
+.p10 {
+	padding: 10px 10px 5px;
+}
+.p15 {
+	padding: 15px 15px 10px;
+}
+
+.text_center {
+    text-align: center;
+}
+.text_right {
+    text-align: right;
+}
+.text_left {
+    text-align: left;
+}
+
+/* 必填项目, 显示红色星号的样式 */
+.required_star {
+	color: #e61c1c;
+	font-size: 18px;
+	font-weight: bold;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+/* 警告, 16号红色加粗字体 */
+.warning_tips {
+	font-size: 16px;
+	color: #e61c1c;
+	font-weight: bold;
+}
+/* 成功提示, 16号绿色加粗字体 */
+.success_tips {
+	font-size: 16px;
+	color: #009688;
+	font-weight: bold;
+}
+
+/* 已选择数据 */
+.pick_show {
+	border: 1px solid #5DC0DE;
+	margin: 4px;
+	padding: 4px 8px 4px 4px;
+	float: left;
+}
+
+/* 上传文件展示区域 */
+.upfile_show {
+	padding: 6px 8px 6px 6px;
+	font-size: 15px;
+	float: left;
+	height: 20px;
+}
+
+/* 上传的图片(缩略图)展示区域 */
+.thumb_show {
+	margin: 5px;
+	float: left;
+	width: 157px;
+	height: 118px;
+	position: relative;
+    box-shadow: 0 0 4px -1px #000;
+    text-align: center;
+}
+/* 图片(缩略图)删除图标 */
+.del_thumb_x {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+	text-align: center;
+	background: red;
+	color: #fff;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+
+/* 细线表格 */
+.my_table {
+    border-color: #DDDDDD !important;
+	width:100%;
+	border-collapse:collapse;
+	border-spacing:0;
+	border-left:1px solid #DDDDDD;
+	border-top: 1px solid #DDDDDD;
+}
+.my_table tr {
+	height:36px;
+}
+.my_table th {
+	background: #F5F5F6;
+}
+.my_table th, .my_table td {
+	text-align:center;
+	padding-top:3px;
+	padding-bottom:3px;
+	padding-left:5px;
+	padding-right:5px;
+	border-right:1px solid #DDDDDD;
+	border-bottom:1px solid #DDDDDD;
+}
